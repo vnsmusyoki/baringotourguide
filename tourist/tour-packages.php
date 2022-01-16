@@ -33,7 +33,7 @@ if (!isset($_SESSION['tourist'])) {
 		<script src="js/jquery-2.1.4.min.js"></script>
 		<!-- //jQuery -->
 		<!-- tables -->
-		<link rel="stylesheet" type="text/css" href="css/table-style.css" />
+		<!-- <link rel="stylesheet" type="text/css" href="css/table-style.css" /> -->
 		<link rel="stylesheet" type="text/css" href="css/basictable.css" />
 		<script type="text/javascript" src="js/jquery.basictable.min.js"></script>
 		<script type="text/javascript">
@@ -68,6 +68,8 @@ if (!isset($_SESSION['tourist'])) {
 		<link href='//fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 		<!-- lined-icons -->
 		<link rel="stylesheet" href="css/icon-font.min.css" type='text/css' />
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+		<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css">
 		<!-- //lined-icons -->
 	</head>
 
@@ -84,21 +86,17 @@ if (!isset($_SESSION['tourist'])) {
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="index.php">Home</a><i class="fa fa-angle-right"></i>Browse Packages</li>
 				</ol>
-				<div class="agile-grids">
+				<div class="card">
 					<!-- tables -->
-
-					<div class="agile-tables">
-						<div class="w3l-table-info">
-							<h2>Browse Packages</h2>
-							<table id="table">
-								<thead>
+					<div class="table-responsive">
+						<table class="display" id="exampleds">
+						<thead>
 									<tr>
 										<th>#</th>
 										<th>Name</th>
 										<th>Type</th>
 										<th>Location</th>
-										<th>Price</th>
-										<th>Creation Date</th>
+										<th>Price</th> 
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -116,20 +114,16 @@ if (!isset($_SESSION['tourist'])) {
 												<td><?php echo htmlentities($result->PackageName); ?></td>
 												<td><?php echo htmlentities($result->PackageType); ?></td>
 												<td><?php echo htmlentities($result->PackageLocation); ?></td>
-												<td>$<?php echo htmlentities($result->PackagePrice); ?></td>
-												<td><?php echo htmlentities($result->Creationdate); ?></td>
-												<td><a href="update-package.php?pid=<?php echo htmlentities($result->PackageId); ?>"><button type="button" class="btn btn-primary btn-block">View Details</button></a></td>
+												<td>$<?php echo htmlentities($result->PackagePrice); ?></td> 
+												<td><a href="package-details.php?pid=<?php echo htmlentities($result->PackageId); ?>"><button type="button" class="btn btn-primary btn-block">View Details</button></a></td>
 											</tr>
 									<?php $cnt = $cnt + 1;
 										}
 									} ?>
 								</tbody>
-							</table>
-						</div>
 						</table>
-
-
 					</div>
+				 
 					<!-- script-for sticky-nav -->
 					<script>
 						$(document).ready(function() {
@@ -188,7 +182,20 @@ if (!isset($_SESSION['tourist'])) {
 		<!-- Bootstrap Core JavaScript -->
 		<script src="js/bootstrap.min.js"></script>
 		<!-- /Bootstrap Core JavaScript -->
-
+		<script src="js/datatables/custom-basic.js"></script>
+		<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+		<script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.print.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				$('#exampleds').DataTable({
+					dom: 'Bfrtip',
+					buttons: [
+						'print'
+					]
+				});
+			});
+		</script>
 	</body>
 
 	</html>
