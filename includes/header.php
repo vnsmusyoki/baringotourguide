@@ -70,7 +70,7 @@
 							<li><a href="index.php">Home</a></li>
 							<li><a href="page.php?type=aboutus">About</a></li>
 								<li><a href="package-list.php">Tour Packages</a></li>
-								<li><a href="signup.php">reservations and accomodations</a></li>
+								<li><a href="signup.php">Manage My Bookings</a></li>
 								<li><a href="page.php?type=privacy">Privacy Policy</a></li>
 
 								<li><a href="page.php?type=terms">Terms of Use</a></li>

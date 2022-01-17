@@ -100,7 +100,6 @@ if (isset($_POST['signin'])) {
 
         <p><a href="index.php">Return to HomePage</a></p>
         <?php
-        include('includes/config.php');
         if (isset($_POST['submituser'])) {
             $fname = $_POST['fname'];
             $mnumber = $_POST['mobilenumber'];
