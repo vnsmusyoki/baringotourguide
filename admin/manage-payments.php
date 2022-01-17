@@ -129,12 +129,12 @@ if (strlen($_SESSION['alogin']) == 0) {
 				</div>
 				<!--heder end here-->
 				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="index.html">Home</a><i class="fa fa-angle-right"></i>Manage Bookings</li>
+					<li class="breadcrumb-item"><a href="index.html">Home</a><i class="fa fa-angle-right"></i>All Confirmed Payments</li>
 				</ol>
 				<div class="agile-grids">
 					<!-- tables -->
 					<?php if ($error) { ?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } else if ($msg) { ?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php } ?>
-					<div class="card table-responsive">
+					<div class="card table-responsive" style="padding:1rem .5rem;">
 						<table class="display" id="exampleds">
 							<thead>
 								<tr>
@@ -145,17 +145,14 @@ if (strlen($_SESSION['alogin']) == 0) {
 									<th>Destination</th>
 									<th>Price</th>
 									<th>From Date</th>
-									<th>To Date</th>
-									<th>Description</th>
-									<th>Transaction Code</th>
-									<th>Tour Status</th>
-									<th>Payment Status</th>
+									<th>To Date</th> 
+									<th>Transaction Code</th> 
 								</tr>
 							</thead>
 							<tbody style="font-size: 12px;">
 								<?php
 								$conn = mysqli_connect('localhost', 'root', '', 'tms');
-								$sql = "SELECT * from `tblbooking` WHERE `transaction_status`='waiting'";
+								$sql = "SELECT * from `tblbooking` WHERE `status`=1";
 								$querysql = mysqli_query($conn, $sql);
 								$querysqlrows = mysqli_num_rows($querysql);
 								if ($querysqlrows) {
@@ -209,13 +206,11 @@ if (strlen($_SESSION['alogin']) == 0) {
                                                 <td><a href='update-package.php?pid=$packagebooked'>$packagename</a></td>
                                                 <td>Kshs. $packageprice</td>
                                                 <td>$fromdate</td>
-                                                <td>$todate</td>
-                                                <td>$comment</td>
+                                                <td>$todate</td> 
                                                 <td style='text-transform:uppercase;'>$transcode</td>
-                                                <td>$statusverdict</td>
-                                                <td><a href='manage-bookings.php?bkid=$bookingid' onclick='return confirm('Do you really want to cancel booking')'><span class='badge badge-danger'>Cancel</span></a> / <a href='manage-bookings.php?bckid=$bookingid' onclick='return confirm('booking has been confirm')'><span class='badge badge-success'>Confirm</span></a></td>
-                                            </tr>
+                                                 </tr>
                                         ";
+                                        $cnt++;
 									}
 								}
 								?>
