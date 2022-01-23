@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 07, 2022 at 06:19 PM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 8.0.10
+-- Generation Time: Jan 17, 2022 at 10:22 AM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 8.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -39,7 +39,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `UserName`, `Password`, `updationDate`) VALUES
-(1, 'admin', '81dc9bdb52d04dc20036dbd8313ed055', '2020-05-11 11:18:49');
+(1, 'admin', '5f4dcc3b5aa765d61d8327deb882cf99', '2020-05-11 11:18:49');
 
 -- --------------------------------------------------------
 
@@ -56,6 +56,8 @@ CREATE TABLE `tblbooking` (
   `Comment` mediumtext DEFAULT NULL,
   `RegDate` timestamp NULL DEFAULT current_timestamp(),
   `status` int(11) DEFAULT NULL,
+  `transaction_code` varchar(50) DEFAULT NULL,
+  `transaction_status` varchar(50) DEFAULT NULL,
   `CancelledBy` varchar(5) DEFAULT NULL,
   `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -64,14 +66,16 @@ CREATE TABLE `tblbooking` (
 -- Dumping data for table `tblbooking`
 --
 
-INSERT INTO `tblbooking` (`BookingId`, `PackageId`, `UserEmail`, `FromDate`, `ToDate`, `Comment`, `RegDate`, `status`, `CancelledBy`, `UpdationDate`) VALUES
-(1, 1, 'test@gmail.com', '2020-07-11', '2020-07-18', 'I want this package.', '2020-07-08 06:38:36', 2, 'u', '2020-07-08 06:53:45'),
-(2, 2, 'test@gmail.com', '2020-07-10', '2020-07-13', 'There is some discount', '2020-07-08 06:43:25', 1, NULL, '2020-07-08 06:52:44'),
-(3, 4, 'abir@gmail.com', '2020-07-11', '2020-07-15', 'When I get conformation', '2020-07-08 06:44:39', 2, 'a', '2020-07-08 06:49:55'),
-(4, 7, 'dennis@gmail.com', '2021-12-07', '2021-12-13', 'iuytfg', '2021-12-30 12:59:15', 1, NULL, '2021-12-30 13:00:59'),
-(5, 2, 'kevin28@gmail.com', '2022-01-04', '2022-01-11', 'dc', '2022-01-03 15:19:25', 1, NULL, '2022-01-03 15:21:50'),
-(6, 14, 'kevin28@gmail.com', '2022-01-04', '2022-01-25', 'fd', '2022-01-06 07:07:42', 0, NULL, NULL),
-(7, 10, 'kevin28@gmail.com', '2022-01-07', '2022-01-07', 'gtf', '2022-01-06 08:44:15', 0, NULL, NULL);
+INSERT INTO `tblbooking` (`BookingId`, `PackageId`, `UserEmail`, `FromDate`, `ToDate`, `Comment`, `RegDate`, `status`, `transaction_code`, `transaction_status`, `CancelledBy`, `UpdationDate`) VALUES
+(1, 1, 'test@gmail.com', '2020-07-11', '2020-07-18', 'I want this package.', '2020-07-08 06:38:36', 2, NULL, NULL, 'u', '2020-07-08 06:53:45'),
+(2, 2, 'test@gmail.com', '2020-07-10', '2020-07-13', 'There is some discount', '2020-07-08 06:43:25', 1, NULL, NULL, NULL, '2020-07-08 06:52:44'),
+(3, 4, 'abir@gmail.com', '2020-07-11', '2020-07-15', 'When I get conformation', '2020-07-08 06:44:39', 2, NULL, NULL, 'a', '2020-07-08 06:49:55'),
+(4, 7, 'dennis@gmail.com', '2021-12-07', '2021-12-13', 'iuytfg', '2021-12-30 12:59:15', 1, NULL, NULL, NULL, '2021-12-30 13:00:59'),
+(5, 2, 'kevin28@gmail.com', '2022-01-04', '2022-01-11', 'dc', '2022-01-03 15:19:25', 1, NULL, NULL, NULL, '2022-01-03 15:21:50'),
+(6, 14, 'kevin28@gmail.com', '2022-01-04', '2022-01-25', 'fd', '2022-01-06 07:07:42', 0, NULL, NULL, NULL, NULL),
+(7, 10, 'kevin28@gmail.com', '2022-01-07', '2022-01-07', 'gtf', '2022-01-06 08:44:15', 0, NULL, NULL, NULL, NULL),
+(8, 2, 'emailed@gmail.com', '2022-01-19', '2022-01-22', 'i need this trip ', '2022-01-17 05:42:10', 1, 'olkjgfdrtb', 'Confirmed', NULL, '2022-01-17 07:21:29'),
+(9, 14, 'emailed@gmail.com', '2022-01-18', '2022-01-28', 'i loved last trip', '2022-01-17 07:33:50', 1, 'olkjgfdrtp', 'Confirmed', NULL, '2022-01-17 07:35:24');
 
 -- --------------------------------------------------------
 
@@ -131,7 +135,9 @@ INSERT INTO `tblissues` (`id`, `UserEmail`, `Issue`, `Description`, `PostingDate
 (9, NULL, NULL, NULL, '2021-12-30 12:58:04', NULL, NULL),
 (10, NULL, NULL, NULL, '2022-01-03 15:17:29', NULL, NULL),
 (11, 'kevin28@gmail.com', 'Refund', 'fdfdfdf', '2022-01-03 15:20:11', 'vdvvvvd', '2022-01-03 15:21:13'),
-(12, 'kevin28@gmail.com', 'Cancellation', 'xcxc', '2022-01-03 15:20:30', 'mbbnb', '2022-01-03 15:21:31');
+(12, 'kevin28@gmail.com', 'Cancellation', 'xcxc', '2022-01-03 15:20:30', 'mbbnb', '2022-01-03 15:21:31'),
+(13, NULL, NULL, NULL, '2022-01-16 13:44:26', NULL, NULL),
+(14, NULL, NULL, NULL, '2022-01-16 13:59:09', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -217,7 +223,10 @@ INSERT INTO `tblusers` (`id`, `FullName`, `MobileNumber`, `EmailId`, `Password`,
 (9, 'kiprop', '0712345634', 'dennis@gmail.com', '2639c860f3d00fed7ea9065d06c6169d', '2021-12-30 12:58:03', NULL),
 (10, 'kevin', '0718405814', 'kevin28@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', '2022-01-03 15:17:28', NULL),
 (11, NULL, NULL, NULL, 'd41d8cd98f00b204e9800998ecf8427e', '2022-01-03 15:20:10', NULL),
-(12, NULL, NULL, NULL, 'd41d8cd98f00b204e9800998ecf8427e', '2022-01-03 15:20:30', NULL);
+(12, NULL, NULL, NULL, 'd41d8cd98f00b204e9800998ecf8427e', '2022-01-03 15:20:30', NULL),
+(13, 'chekeke', '0722112212', 'emailed@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', '2022-01-16 13:44:26', NULL),
+(14, 'chekeke', '0722112212', 'emailed@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', '2022-01-16 13:44:26', NULL),
+(15, 'ddeded', '0787733210', 'idwmal@gmail.com', '5f4dcc3b5aa765d61d8327deb882cf99', '2022-01-16 14:38:27', NULL);
 
 --
 -- Indexes for dumped tables
@@ -281,7 +290,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `tblbooking`
 --
 ALTER TABLE `tblbooking`
-  MODIFY `BookingId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `BookingId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tblenquiry`
@@ -293,7 +302,7 @@ ALTER TABLE `tblenquiry`
 -- AUTO_INCREMENT for table `tblissues`
 --
 ALTER TABLE `tblissues`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `tblpages`
@@ -311,7 +320,7 @@ ALTER TABLE `tbltourpackages`
 -- AUTO_INCREMENT for table `tblusers`
 --
 ALTER TABLE `tblusers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
