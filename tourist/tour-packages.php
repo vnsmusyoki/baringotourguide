@@ -86,68 +86,46 @@ if (!isset($_SESSION['tourist'])) {
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><a href="index.php">Home</a><i class="fa fa-angle-right"></i>Browse Packages</li>
 				</ol>
-				<div class="card">
-					<!-- tables -->
-					<div class="table-responsive">
-						<table class="display" id="exampleds">
-						<thead>
-									<tr>
-										<th>#</th>
-										<th>Name</th>
-										<th>Type</th>
-										<th>Location</th>
-										<th>Price</th> 
-										<th>Action</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php $sql = "SELECT * from TblTourPackages";
-									$query = $dbh->prepare($sql);
-									//$query -> bindParam(':city', $city, PDO::PARAM_STR);
-									$query->execute();
-									$results = $query->fetchAll(PDO::FETCH_OBJ);
-									$cnt = 1;
-									if ($query->rowCount() > 0) {
-										foreach ($results as $result) {				?>
-											<tr>
-												<td><?php echo htmlentities($cnt); ?></td>
-												<td><?php echo htmlentities($result->PackageName); ?></td>
-												<td><?php echo htmlentities($result->PackageType); ?></td>
-												<td><?php echo htmlentities($result->PackageLocation); ?></td>
-												<td>$<?php echo htmlentities($result->PackagePrice); ?></td> 
-												<td><a href="package-details.php?pid=<?php echo htmlentities($result->PackageId); ?>"><button type="button" class="btn btn-primary btn-block">View Details</button></a></td>
-											</tr>
-									<?php $cnt = $cnt + 1;
-										}
-									} ?>
-								</tbody>
-						</table>
-					</div>
-				 
-					<!-- script-for sticky-nav -->
-					<script>
-						$(document).ready(function() {
-							var navoffeset = $(".header-main").offset().top;
-							$(window).scroll(function() {
-								var scrollpos = $(window).scrollTop();
-								if (scrollpos >= navoffeset) {
-									$(".header-main").addClass("fixed");
-								} else {
-									$(".header-main").removeClass("fixed");
-								}
-							});
+				<div class="row">
 
-						});
-					</script>
-					<!-- /script-for sticky-nav -->
-					<!--inner block start here-->
-					<div class="inner-block">
 
-					</div>
-					<!--inner block end here-->
-					<!--copy rights start here-->
-					<?php include('includes/footer.php'); ?>
-					<!--COPY rights end here-->
+					<?php
+
+					$conn = mysqli_connect('localhost', 'root', '', 'tms');
+					$sql = "SELECT * from `tbltourpackages`";
+					$query = mysqli_query($conn, $sql);
+					$rows = mysqli_num_rows($query);
+					if ($rows >= 1) {
+						$cnt = 1;
+						while ($fetch = mysqli_fetch_assoc($query)) {
+							$packagename = $fetch['PackageName'];
+							$packagetype = $fetch['PackageType'];
+							$packagelocation = $fetch['PackageLocation'];
+							$packageprice = $fetch['PackagePrice'];
+							$packagefeatures = $fetch['PackageFeatures'];
+							$packageid = $fetch['PackageId'];
+							$packagdedetails = $fetch['PackageDetails'];
+							$image = $fetch['PackageImage'];
+
+					?>
+							<div class="col-lg-4">
+								<div class="card">
+									<img src="../admin/packageimages/<?php echo $image; ?>" alt="Card image cap" style="width:100%;height:25vh;">
+									<div class="card-body" style="padding:1rem">
+										<h5 class="card-title"><?php echo $packagename; ?> </h5>
+										<p>Charges per Night - Kshs. <?php echo $packageprice; ?></p>
+										<p class="card-text"><?php echo $packagelocation; ?></p>
+										<a href="book-package.php?package=<?php echo $packageid; ?>" class="btn btn-primary">Book Now</a>
+									</div>
+								</div>
+							</div>
+
+					<?php
+						}
+					}
+
+					?>
+
 				</div>
 			</div>
 			<!--//content-inner-->

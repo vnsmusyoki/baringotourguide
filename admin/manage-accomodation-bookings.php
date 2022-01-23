@@ -138,7 +138,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 						<table class="display" id="exampleds">
 							<thead>
 								<tr>
-									<th>#</th>
+								
 									<th>User</th>
 									<th>Phone Number</th>
 									<th>Email Address</th>
@@ -148,6 +148,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 									<th>Total Paid</th> 
 									<th>Transaction Code</th>
 									<th>Tour Status</th> 
+                                    <th>Action</th>
 								</tr>
 							</thead>
 							<tbody style="font-size: 12px;">
@@ -157,13 +158,14 @@ if (strlen($_SESSION['alogin']) == 0) {
 								$querysql = mysqli_query($conn, $sql);
 								$querysqlrows = mysqli_num_rows($querysql);
 								if ($querysqlrows) {
-									$cnt = 1;
+									 
 									while ($fetch = mysqli_fetch_assoc($querysql)) {
 										$userid = $fetch['user_id'];
 										$accid = $fetch['acc_id'];
 										$days = $fetch['days']; 
 										$transcode = $fetch['transaction_code'];
 										$status = $fetch['status']; 
+                                        $recordid = $fetch['id'];
 
 										$packagedetails = "SELECT * from `tblaccomodations` WHERE `id`='$accid'";
 										$querypackagedetails = mysqli_query($conn, $packagedetails);
@@ -172,9 +174,11 @@ if (strlen($_SESSION['alogin']) == 0) {
 											while ($fetchdata = mysqli_fetch_assoc($querypackagedetails)) {
 												$accname = $fetchdata['name'];
 												$accprice = $fetchdata['price'];
+
+                                                $totalpaid = $accprice * $days;
 											}
 										}
-										$userbooking = "SELECT * from `tblusers` WHERE `EmailId`='$bookingemail'";
+								 	$userbooking = "SELECT * from `tblusers` WHERE `id`='$userid'";
 										$queryuserbooking = mysqli_query($conn, $userbooking);
 										$queryuserbookingrows = mysqli_num_rows($queryuserbooking);
 										if ($queryuserbookingrows >= 1) {
@@ -189,18 +193,17 @@ if (strlen($_SESSION['alogin']) == 0) {
 										echo "
                                         
                                             <tr>
-                                                <td>$cnt</td>
-                                                <td>$bookingname</td>
-                                                <td>$bookingnumber</td>
-                                                <td>$bookingemail</td>
-                                                <td><a href='update-package.php?pid=$packagebooked'>$packagename</a></td>
-                                                <td>Kshs. $packageprice</td>
-                                                <td>$fromdate</td>
-                                                <td>$todate</td>
-                                                <td>$comment</td>
-                                                <td style='text-transform:uppercase;'>$transcode</td>
-                                                <td>$statusverdict</td>
-                                                <td><a href='manage-bookings.php?bkid=$bookingid' onclick='return confirm('Do you really want to cancel booking')'><span class='badge badge-danger'>Cancel</span></a> / <a href='manage-bookings.php?bckid=$bookingid' onclick='return confirm('booking has been confirm')'><span class='badge badge-success'>Confirm</span></a></td>
+                                             
+                                                <td>$username</td>
+                                                <td>$usermobile</td>
+                                                <td>$useremail</td>
+                                                <td><a >$accname</a></td>
+                                                <td>$days</td>
+                                                <td>Kshs. $accprice</td>
+                                                <td>$totalpaid</td>
+                                                <td>$transcode</td>
+                                                <td>$status</td> 
+                                                <td><a href='deny-accomodation.php?acc=$recordid' onclick='return confirm('Do you really want to cancel booking')'><span class='badge badge-danger'>Cancel</span></a> / <a href='accept-accomodation.php?acc=$recordid' onclick='return confirm('booking has been confirm')'><span class='badge badge-success'>Confirm</span></a></td>
                                             </tr>
                                         ";
 									}

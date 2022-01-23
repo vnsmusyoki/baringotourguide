@@ -84,45 +84,81 @@ if (!isset($_SESSION['tourist'])) {
                 </div>
                 <!--heder end here-->
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.php">Home</a><i class="fa fa-angle-right"></i>Browse Packages</li>
+                    <li class="breadcrumb-item"><a href="index.php">Home</a><i class="fa fa-angle-right"></i>My Trips</li>
                 </ol>
                 <div class="card">
                     <!-- tables -->
                     <div class="table-responsive">
-                        <!-- <table class="display" id="exampleds">
+                        <table class="display" id="exampleds">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
-                                    <th>Type</th>
-                                    <th>Location</th>
+                                    <th>Destination</th>
                                     <th>Price</th>
-                                    <th>Action</th>
+                                    <th>From Date</th>
+                                    <th>To Date</th>
+                                    <th>Description</th>
+                                    <th>Transaction Code</th>
+                                    <th>Tour Status</th>
+                                    <th>Payment Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                $package = $_GET['pid'];
-                                $sql = "SELECT * from `TblTourPackages` WHERE `id`='$PackageId'";
-                                $query = $dbh->prepare($sql); 
-                                $query->execute();
-                                $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                $cnt = 1;
-                                if ($query->rowCount() > 0) {
-                                    foreach ($results as $result) {                ?>
-                                        <tr>
-                                            <td><?php echo htmlentities($cnt); ?></td>
-                                            <td><?php echo htmlentities($result->PackageName); ?></td>
-                                            <td><?php echo htmlentities($result->PackageType); ?></td>
-                                            <td><?php echo htmlentities($result->PackageLocation); ?></td>
-                                            <td>$<?php echo htmlentities($result->PackagePrice); ?></td>
-                                            <td><a href="package-details.php?pid=<?php echo htmlentities($result->PackageId); ?>"><button type="button" class="btn btn-primary btn-block">View Details</button></a></td>
-                                        </tr>
-                                <?php $cnt = $cnt + 1;
+                                $user = $_SESSION['tourist'];
+                                $conn = mysqli_connect('localhost', 'root', '', 'tms');
+                                $sql = "SELECT * from `tblbooking` WHERE `UserEmail`='$user'";
+                                $querysql = mysqli_query($conn, $sql);
+                                $querysqlrows = mysqli_num_rows($querysql);
+                                if ($querysqlrows) {
+                                    $cnt = 1;
+                                    while ($fetch = mysqli_fetch_assoc($querysql)) {
+                                        $fromdate = $fetch['FromDate'];
+                                        $todate = $fetch['ToDate'];
+                                        $comment = $fetch['Comment'];
+                                        $regdate = $fetch['RegDate'];
+                                        $transcode = $fetch['transaction_code'];
+                                        $status = $fetch['status'];
+                                        $transstatus = $fetch['transaction_status'];
+                                        $packagebooked = $fetch['PackageId'];
+
+                                        $packagedetails = "SELECT * from `tbltourpackages` WHERE `PackageId`='$packagebooked'";
+                                        $querypackagedetails = mysqli_query($conn, $packagedetails);
+                                        $querypackagedetailsrows = mysqli_num_rows($querypackagedetails);
+                                        if ($querypackagedetailsrows >= 1) {
+                                            while ($fetchdata = mysqli_fetch_assoc($querypackagedetails)) {
+                                                $packagename = $fetchdata['PackageName'];
+                                                $packageprice = $fetchdata['PackagePrice'];
+                                            }
+                                        }
+
+                                        if ($status == 1) {
+                                            $statusverdict = "Confirmed";
+                                        } else if ($status == 2) {
+                                            $statusverdict = "Cancelled";
+                                        } else {
+                                            $statusverdict = "Waiting";
+                                        }
+
+                                        echo "
+                                        
+                                            <tr>
+                                                <td>$cnt</td>
+                                                <td>$packagename</td>
+                                                <td>$packageprice</td>
+                                                <td>$fromdate</td>
+                                                <td>$todate</td>
+                                                <td>$comment</td>
+                                                <td style='text-transform:uppercase;'>$transcode</td>
+                                                <td>$statusverdict</td>
+                                                <td>$transstatus</td>
+                                            </tr>
+                                        ";
                                     }
-                                } ?>
+                                }
+                                ?>
                             </tbody>
-                        </table> -->
+                        </table>
                     </div>
 
                     <!-- script-for sticky-nav -->
